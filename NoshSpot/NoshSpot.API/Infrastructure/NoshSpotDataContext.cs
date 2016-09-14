@@ -29,7 +29,7 @@ namespace NoshSpot.API.Infrastructure
             // a category has many restaurants
             modelBuilder.Entity<Category>()
                         .HasMany(c => c.Restaurants)
-                        .WithRequired(r => r.Category)
+                        .WithOptional(r => r.Category)
                         .HasForeignKey(r => r.CategoryId);
             
             // a customer has many orders
