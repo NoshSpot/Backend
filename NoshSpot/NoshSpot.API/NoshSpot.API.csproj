@@ -136,6 +136,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NoshSpotDataContext.cs" />
+    <Compile Include="Migrations\201609141653177_Initial-Migration.cs" />
+    <Compile Include="Migrations\201609141653177_Initial-Migration.Designer.cs">
+      <DependentUpon>201609141653177_Initial-Migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -163,6 +167,11 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201609141653177_Initial-Migration.resx">
+      <DependentUpon>201609141653177_Initial-Migration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

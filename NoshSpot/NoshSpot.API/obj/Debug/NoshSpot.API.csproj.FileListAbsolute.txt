@@ -46,3 +46,5 @@ C:\dev\NoshSpot\Backend\NoshSpot\NoshSpot.API\bin\System.Web.Http.WebHost.xml
 C:\dev\NoshSpot\Backend\NoshSpot\NoshSpot.API\obj\Debug\NoshSpot.API.csprojResolveAssemblyReference.cache
 C:\dev\NoshSpot\Backend\NoshSpot\NoshSpot.API\obj\Debug\NoshSpot.API.dll
 C:\dev\NoshSpot\Backend\NoshSpot\NoshSpot.API\obj\Debug\NoshSpot.API.pdb
+C:\dev\NoshSpot\Backend\NoshSpot\NoshSpot.API\obj\Debug\NoshSpot.API.Migrations.InitialMigration.resources
+C:\dev\NoshSpot\Backend\NoshSpot\NoshSpot.API\obj\Debug\NoshSpot.API.csproj.GenerateResource.Cache
