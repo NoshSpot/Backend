@@ -30,7 +30,7 @@ namespace NoshSpot.API.Infrastructure
             modelBuilder.Entity<Category>()
                         .HasMany(c => c.Restaurants)
                         .WithRequired(r => r.Category)
-                        .HasForeignKey(r => r.RestaurantId);
+                        .HasForeignKey(r => r.CategoryId);
             
             // a customer has many orders
             modelBuilder.Entity<Customer>()
