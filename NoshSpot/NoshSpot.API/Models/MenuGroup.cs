@@ -13,5 +13,7 @@ namespace NoshSpot.API.Models
         public string MenuGroupTitle { get; set; }
         
         public virtual ICollection<MenuItem> MenuItems { get; set; }
+
+        public virtual Restaurant Restaurant { get; set; }
     }
 }

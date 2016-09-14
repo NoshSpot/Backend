@@ -26,16 +26,19 @@ namespace NoshSpot.API.Infrastructure
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            // a category has many restaurants
             modelBuilder.Entity<Category>()
                         .HasMany(c => c.Restaurants)
                         .WithRequired(r => r.Category)
                         .HasForeignKey(r => r.RestaurantId);
-
+            
+            // a customer has many orders
             modelBuilder.Entity<Customer>()
                         .HasMany(c => c.Orders)
                         .WithRequired(o => o.Customer)
                         .HasForeignKey(o => o.CustomerId);
 
+            // a customer has many reviews
             modelBuilder.Entity<Customer>()
                         .HasMany(c => c.Reviews)
                         .WithRequired(r => r.Customer)
@@ -58,7 +61,30 @@ namespace NoshSpot.API.Infrastructure
                         .HasMany(o => o.OrderItems)
                         .WithRequired(oi => oi.Order)
                         .HasForeignKey(oi => oi.OrderId);
+            
+            // an order has many payments
+            modelBuilder.Entity<Order>()
+                        .HasMany(o => o.Payments)
+                        .WithRequired(p => p.Order)
+                        .HasForeignKey(p => p.OrderId);
 
+            // a restaurant has many reviews
+            modelBuilder.Entity<Restaurant>()
+                        .HasMany(r => r.Reviews)
+                        .WithRequired(rvw => rvw.Restaurant)
+                        .HasForeignKey(rvw => rvw.RestaurantId);
+
+            // a restaurant has many orders
+            modelBuilder.Entity<Restaurant>()
+                        .HasMany(r => r.Orders)
+                        .WithRequired(o => o.Restaurant)
+                        .HasForeignKey(o => o.RestaurantId);
+
+            // a restaurant has many menuGroups
+            modelBuilder.Entity<Restaurant>()
+                        .HasMany(r => r.MenuGroups)
+                        .WithRequired(mg => mg.Restaurant)
+                        .HasForeignKey(mg => mg.RestaurantId);
         }
     }
 }

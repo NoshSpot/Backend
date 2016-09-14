@@ -19,5 +19,11 @@ namespace NoshSpot.API.Models
         public string WebSite { get; set; }
 
         public virtual Category Category { get; set; }
+
+        public virtual ICollection<Review> Reviews { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
+
+        public virtual ICollection<MenuGroup> MenuGroups { get; set; }
     }
 }
