@@ -132,6 +132,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\MenuGroupsController.cs" />
+    <Compile Include="Controllers\MenuItemsController.cs" />
+    <Compile Include="Controllers\RestaurantsController.cs" />
+    <Compile Include="Controllers\ReviewsController.cs" />
+    <Compile Include="Controllers\OrderItemsController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -139,6 +148,10 @@
     <Compile Include="Migrations\201609141653177_Initial-Migration.cs" />
     <Compile Include="Migrations\201609141653177_Initial-Migration.Designer.cs">
       <DependentUpon>201609141653177_Initial-Migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609142054215_MakeCategoryToRestaurantOptional.cs" />
+    <Compile Include="Migrations\201609142054215_MakeCategoryToRestaurantOptional.Designer.cs">
+      <DependentUpon>201609142054215_MakeCategoryToRestaurantOptional.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
@@ -172,10 +185,16 @@
     <EmbeddedResource Include="Migrations\201609141653177_Initial-Migration.resx">
       <DependentUpon>201609141653177_Initial-Migration.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609142054215_MakeCategoryToRestaurantOptional.resx">
+      <DependentUpon>201609142054215_MakeCategoryToRestaurantOptional.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -194,6 +213,9 @@
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <servers defaultServer="SelfHostServer">
+            <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:61815/" workingDir="" />
+          </servers>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
