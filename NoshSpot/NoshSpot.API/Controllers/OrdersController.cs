@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using NoshSpot.API.Infrastructure;
 using NoshSpot.API.Models;
+using AutoMapper;
+using NoshSpot.API.DTO;
 
 namespace NoshSpot.API.Controllers
 {
@@ -18,9 +20,9 @@ namespace NoshSpot.API.Controllers
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
         // GET: api/Orders
-        public IQueryable<Order> GetOrders()
+        public IHttpActionResult GetOrders()
         {
-            return db.Orders;
+            return Ok(Mapper.Map<IEnumerable<OrderDTO>>(db.Orders));
         }
 
         // GET: api/Orders/5
