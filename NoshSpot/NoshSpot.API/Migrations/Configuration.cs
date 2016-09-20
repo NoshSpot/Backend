@@ -2,6 +2,7 @@ namespace NoshSpot.API.Migrations
 {
     using Models;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -17,6 +18,7 @@ namespace NoshSpot.API.Migrations
         {
             string[] menuGroupTitles = new string[] { "Starters", "Appetizers", "Main", "Desserts", "Entrees", "Soups", "Salads", "Drinks", "Vegetarian", "Vegan", "Pescatarian", "Carnivore", "Omnivore" };
 
+            List<MenuItem> items = new List<MenuItem>();
             //context.Categories.Add(new Models.Category { CategoryTitle = "Chinese" });
             var random = new Random();
 
@@ -38,7 +40,7 @@ namespace NoshSpot.API.Migrations
 
             if(context.Restaurants.Count() == 0)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     context.Restaurants.AddOrUpdate(
                         r => r.Name,
@@ -87,27 +89,59 @@ namespace NoshSpot.API.Migrations
 
                         for (int j = 0; j < numberOfMenuItems; j++)
                         {
-                            menuGroup.MenuItems.Add(new MenuItem
+                            var item = new MenuItem
                             {
                                 Description = Faker.CompanyFaker.BS(),
                                 Name = Faker.CompanyFaker.BS(),
                                 Price = (decimal)Math.Round(random.NextDouble() * 100, 2)
-                            });
+                            };
+                            items.Add(item);
+
+                            menuGroup.MenuItems.Add(item);
                         }
 
                         restaurant.MenuGroups.Add(menuGroup);
                     }
 
-                    //int numberOfReviews = random.Next(0, 2);
+                    foreach(var customer in context.Customers)
+                    {
+                        int numberOfReviews = random.Next(0, 2);
 
-                    //for (int i = 0; i < numberOfReviews; i++)
-                    //{
-                    //    restaurant.Reviews.Add(new Review
-                    //    {
-                    //        RestaurantId = restaurant.RestaurantId,
+                        // random number of reviews
+                        for (int i = 0; i < numberOfReviews; i++)
+                        {
+                            restaurant.Reviews.Add(new Review
+                            {
+                                RestaurantId = restaurant.RestaurantId,
+                                CustomerId = customer.CustomerId,
+                                ReviewDescription = Faker.TextFaker.Sentences(random.Next(2, 5)),
+                                Rating = random.Next(1, 6)
+                            });
+                        }
 
-                    //    });
-                    //}
+                        // random number of orders
+                        for(int i = 0; i < random.Next(1, 4); i++)
+                        {
+                            Order order = new Order
+                            {
+                                RestaurantId = restaurant.RestaurantId,
+                                CustomerId = customer.CustomerId,
+                                TimeStamp = DateTime.Now
+                            };
+
+                            int numOrderItems = random.Next(1, 4);
+
+                            for (int j = 0; j < numOrderItems; j++)
+                            {
+                                order.OrderItems.Add(new OrderItem
+                                {
+                                    MenuItemId = random.Next(1, items.Count()),
+                                });
+                            }
+
+                            customer.Orders.Add(order);
+                        }
+                    }
                 }
 
                 context.SaveChanges();
