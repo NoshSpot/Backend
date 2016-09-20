@@ -22,7 +22,7 @@ namespace NoshSpot.API.Models
         public string Telephone { get; set; }
         public string Email { get; set; }
         
-        public ICollection<Review> Reviews { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

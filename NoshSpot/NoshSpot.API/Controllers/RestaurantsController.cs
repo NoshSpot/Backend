@@ -50,7 +50,9 @@ namespace NoshSpot.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(restaurant).State = EntityState.Modified;
+            var restaurantToBeUpdated = db.Restaurants.Find(id);
+            db.Entry(restaurantToBeUpdated).CurrentValues.SetValues(restaurant);
+            db.Entry(restaurantToBeUpdated).State = EntityState.Modified;
 
             try
             {
