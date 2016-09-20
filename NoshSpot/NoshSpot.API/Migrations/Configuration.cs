@@ -38,7 +38,7 @@ namespace NoshSpot.API.Migrations
 
             if(context.Restaurants.Count() == 0)
             {
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     context.Restaurants.AddOrUpdate(
                         r => r.Name,
@@ -55,13 +55,25 @@ namespace NoshSpot.API.Migrations
                         }
                     );
                 }
+                
+                for (int i = 0; i < 5; i++)
+                {
+                    context.Customers.Add(new Customer
+                    {
+                        FirstName = Faker.NameFaker.FirstName(),
+                        LastName = Faker.NameFaker.LastName(),
+                        Address = Faker.LocationFaker.StreetName(),
+                        Email = Faker.InternetFaker.Email(),
+                        ZipCode = random.Next(10000, 100000),
+                        Telephone = Faker.PhoneFaker.Phone()
+                    });
+                }
 
                 context.SaveChanges();
 
-
                 foreach (var restaurant in context.Restaurants)
                 {
-                    int numberOfMenuGroups = random.Next(2, 7);
+                    int numberOfMenuGroups = random.Next(2, 4);
 
                     for (int i = 0; i < numberOfMenuGroups; i++)
                     {
@@ -71,7 +83,7 @@ namespace NoshSpot.API.Migrations
                             RestaurantId = restaurant.RestaurantId
                         };
 
-                        int numberOfMenuItems = random.Next(3, 20);
+                        int numberOfMenuItems = random.Next(3, 6);
 
                         for (int j = 0; j < numberOfMenuItems; j++)
                         {
@@ -85,6 +97,17 @@ namespace NoshSpot.API.Migrations
 
                         restaurant.MenuGroups.Add(menuGroup);
                     }
+
+                    //int numberOfReviews = random.Next(0, 2);
+
+                    //for (int i = 0; i < numberOfReviews; i++)
+                    //{
+                    //    restaurant.Reviews.Add(new Review
+                    //    {
+                    //        RestaurantId = restaurant.RestaurantId,
+
+                    //    });
+                    //}
                 }
 
                 context.SaveChanges();
