@@ -20,6 +20,7 @@ namespace NoshSpot.API.Controllers
         {
             return db.Restaurants.Select(r => new
             {
+                r.RestaurantId,
                 r.Name,
                 r.Description,
                 r.Address,
@@ -50,6 +51,7 @@ namespace NoshSpot.API.Controllers
 
             return Ok(new
             {
+                restaurant.RestaurantId,
                 restaurant.Name,
                 restaurant.Description,
                 restaurant.Address,
@@ -86,6 +88,19 @@ namespace NoshSpot.API.Controllers
                     },
                     rr.ReviewDescription,
                     rr.Rating
+                }),
+                Orders = restaurant.Orders.Select(ro => new
+                {
+                    ro.OrderId,
+                    ro.TimeStamp,
+                    Customer = new
+                    {
+                        ro.Customer.CustomerId,
+                        ro.Customer.FirstName,
+                        ro.Customer.LastName
+                    },
+                    NumItemsOrdered = ro.OrderItems.Count,
+                    TotalPrice = ro.OrderItems.Sum(oi => oi.MenuItem.Price)
                 })
             });
         }

@@ -40,7 +40,7 @@ namespace NoshSpot.API.Migrations
 
             if(context.Restaurants.Count() == 0)
             {
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 50; i++)
                 {
                     context.Restaurants.AddOrUpdate(
                         r => r.Name,
@@ -58,7 +58,7 @@ namespace NoshSpot.API.Migrations
                     );
                 }
                 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 50; i++)
                 {
                     context.Customers.Add(new Customer
                     {
