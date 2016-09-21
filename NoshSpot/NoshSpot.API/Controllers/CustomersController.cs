@@ -70,7 +70,12 @@ namespace NoshSpot.API.Controllers
                     TimeStamp = co.TimeStamp,
                     OrderTotal = co.OrderItems.Sum(oi => oi.MenuItem.Price),
                     NumItemsOrdered = co.OrderItems.Count,
-                    Paid = co.Payments.Sum(p => p.PaymentAmount) >= co.OrderItems.Sum(oi => oi.MenuItem.Price)
+                    Paid = co.Payments.Sum(p => p.PaymentAmount) >= co.OrderItems.Sum(oi => oi.MenuItem.Price),
+                    Restaurant = new
+                    {
+                        co.RestaurantId,
+                        co.Restaurant.Name
+                    }
                 })
             });
         }

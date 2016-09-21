@@ -161,6 +161,10 @@
     <Compile Include="Migrations\201609211919281_ChangePaymentTable.Designer.cs">
       <DependentUpon>201609211919281_ChangePaymentTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609212324200_SwapCascadeDeleteOrderItemMenuItem.cs" />
+    <Compile Include="Migrations\201609212324200_SwapCascadeDeleteOrderItemMenuItem.Designer.cs">
+      <DependentUpon>201609212324200_SwapCascadeDeleteOrderItemMenuItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -197,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609211919281_ChangePaymentTable.resx">
       <DependentUpon>201609211919281_ChangePaymentTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609212324200_SwapCascadeDeleteOrderItemMenuItem.resx">
+      <DependentUpon>201609212324200_SwapCascadeDeleteOrderItemMenuItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
