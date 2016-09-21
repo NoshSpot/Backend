@@ -135,12 +135,22 @@ namespace NoshSpot.API.Migrations
                             {
                                 order.OrderItems.Add(new OrderItem
                                 {
-                                    MenuItemId = random.Next(1, items.Count()),
+                                    MenuItemId = random.Next(1, items.Count())
                                 });
                             }
 
                             customer.Orders.Add(order);
                         }
+                    }
+                }
+
+                context.SaveChanges();
+
+                foreach(var order in context.Orders)
+                {
+                    foreach(var orderItem in order.OrderItems)
+                    {
+                        orderItem.OrderId = order.OrderId;
                     }
                 }
 

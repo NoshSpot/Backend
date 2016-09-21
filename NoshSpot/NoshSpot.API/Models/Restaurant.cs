@@ -13,6 +13,7 @@ namespace NoshSpot.API.Models
             Reviews = new Collection<Review>();
             Orders = new Collection<Order>();
             MenuGroups = new Collection<MenuGroup>();
+            Category = new Category();
         }
 
         public int RestaurantId { get; set; }

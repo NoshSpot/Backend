@@ -54,14 +54,14 @@ namespace NoshSpot.API.Infrastructure
             modelBuilder.Entity<MenuItem>()
                         .HasMany(mi => mi.OrderItems)
                         .WithRequired(oi => oi.MenuItem)
-                        .HasForeignKey(oi => oi.MenuItemId);
+                        .HasForeignKey(oi => oi.MenuItemId)
+                        .WillCascadeOnDelete(false);
 
             // an order has many order items
             modelBuilder.Entity<Order>()
                         .HasMany(o => o.OrderItems)
                         .WithRequired(oi => oi.Order)
-                        .HasForeignKey(oi => oi.OrderId)
-                        .WillCascadeOnDelete(false);
+                        .HasForeignKey(oi => oi.OrderId);
             
             // an order has many payments
             modelBuilder.Entity<Order>()
