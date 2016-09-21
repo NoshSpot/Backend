@@ -69,6 +69,7 @@ namespace NoshSpot.API.Controllers
                     OrderId = co.OrderId,
                     TimeStamp = co.TimeStamp,
                     OrderTotal = co.OrderItems.Sum(oi => oi.MenuItem.Price),
+                    NumItemsOrdered = co.OrderItems.Count,
                     Paid = co.Payments.Sum(p => p.PaymentAmount) >= co.OrderItems.Sum(oi => oi.MenuItem.Price)
                 })
             });
