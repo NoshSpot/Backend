@@ -17,25 +17,6 @@ namespace NoshSpot.API.Controllers
     {
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
-        // GET: api/MenuItems
-        public IQueryable<MenuItem> GetMenuItems()
-        {
-            return db.MenuItems;
-        }
-
-        // GET: api/MenuItems/5
-        [ResponseType(typeof(MenuItem))]
-        public IHttpActionResult GetMenuItem(int id)
-        {
-            MenuItem menuItem = db.MenuItems.Find(id);
-            if (menuItem == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(menuItem);
-        }
-
         // PUT: api/MenuItems/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutMenuItem(int id, MenuItem menuItem)
@@ -50,7 +31,11 @@ namespace NoshSpot.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(menuItem).State = EntityState.Modified;
+            var dbMenuItem = db.MenuItems.Find(id);
+
+            db.Entry(dbMenuItem).CurrentValues.SetValues(menuItem);
+
+            db.Entry(dbMenuItem).State = EntityState.Modified;
 
             try
             {

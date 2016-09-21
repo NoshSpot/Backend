@@ -17,25 +17,6 @@ namespace NoshSpot.API.Controllers
     {
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
-        // GET: api/Reviews
-        public IQueryable<Review> GetReviews()
-        {
-            return db.Reviews;
-        }
-
-        // GET: api/Reviews/5
-        [ResponseType(typeof(Review))]
-        public IHttpActionResult GetReview(int id)
-        {
-            Review review = db.Reviews.Find(id);
-            if (review == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(review);
-        }
-
         // PUT: api/Reviews/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutReview(int id, Review review)
@@ -50,7 +31,9 @@ namespace NoshSpot.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(review).State = EntityState.Modified;
+            var dbReview = db.Reviews.Find(id);
+            db.Entry(dbReview).CurrentValues.SetValues(review);
+            db.Entry(dbReview).State = EntityState.Modified;
 
             try
             {

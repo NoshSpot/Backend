@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NoshSpot.API.Infrastructure;
+using NoshSpot.API.Models;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using NoshSpot.API.Infrastructure;
-using NoshSpot.API.Models;
 
 namespace NoshSpot.API.Controllers
 {
@@ -18,13 +16,24 @@ namespace NoshSpot.API.Controllers
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
         // GET: api/Customers
-        public IQueryable<Customer> GetCustomers()
+        public dynamic GetCustomers()
         {
-            return db.Customers;
+            return db.Customers.Select(c => new
+            {
+                CustomerId = c.CustomerId,
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                Address = c.Address,
+                ZipCode = c.ZipCode,
+                Telephone = c.Telephone,
+                Email = c.Email,
+                AverageReview = c.Reviews.Count > 0 ? Math.Round(c.Reviews.Average(cr => (double)cr.Rating), 2) : 0,
+                OrderCount = c.Orders.Count
+            });
         }
 
         // GET: api/Customers/5
-        [ResponseType(typeof(Customer))]
+        [ResponseType(typeof(object))]
         public IHttpActionResult GetCustomer(int id)
         {
             Customer customer = db.Customers.Find(id);
@@ -33,7 +42,36 @@ namespace NoshSpot.API.Controllers
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(new
+            {
+                CustomerId = customer.CustomerId,
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                Address = customer.Address,
+                ZipCode = customer.ZipCode,
+                Telephone = customer.Telephone,
+                Email = customer.Email,
+                Reviews = customer.Reviews.Select(cr => new
+                {
+                    ReviewId = cr.ReviewId,
+                    RestaurantId = cr.RestaurantId,
+                    CustomerId = cr.CustomerId,
+                    ReviewDescription = cr.ReviewDescription,
+                    Rating = cr.Rating,
+                    Restaurant = new
+                    {
+                        RestaurantId = cr.RestaurantId,
+                        Name = cr.Restaurant.Name
+                    }
+                }),
+                Orders = customer.Orders.Select(co => new
+                {
+                    OrderId = co.OrderId,
+                    TimeStamp = co.TimeStamp,
+                    OrderTotal = co.OrderItems.Sum(oi => oi.MenuItem.Price),
+                    Paid = co.Payments.Sum(p => p.PaymentAmount) >= co.OrderItems.Sum(oi => oi.MenuItem.Price)
+                })
+            });
         }
 
         // PUT: api/Customers/5
@@ -50,7 +88,11 @@ namespace NoshSpot.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+            var dbCustomer = db.Customers.Find(id);
+
+            db.Entry(dbCustomer).CurrentValues.SetValues(customer);
+
+            db.Entry(dbCustomer).State = EntityState.Modified;
 
             try
             {

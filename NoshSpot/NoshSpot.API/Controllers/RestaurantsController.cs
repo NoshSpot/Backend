@@ -1,17 +1,13 @@
-﻿using System;
+﻿using NoshSpot.API.Infrastructure;
+using NoshSpot.API.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using NoshSpot.API.Infrastructure;
-using NoshSpot.API.Models;
-using AutoMapper;
-using NoshSpot.API.DTO;
 
 namespace NoshSpot.API.Controllers
 {
@@ -20,13 +16,26 @@ namespace NoshSpot.API.Controllers
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
         // GET: api/Restaurants
-        public IHttpActionResult GetRestaurants()
+        public dynamic GetRestaurants()
         {
-            var databaseRestaurants = db.Restaurants;
-
-            var mappedRestaurants = Mapper.Map<IEnumerable<RestaurantDTO>>(databaseRestaurants);
-
-            return Ok(mappedRestaurants);
+            return db.Restaurants.Select(r => new
+            {
+                r.Name,
+                r.Description,
+                r.Address,
+                r.ZipCode,
+                r.Telephone,
+                r.Email,
+                r.WebSite,
+                Category = new
+                {
+                    r.CategoryId,
+                    r.Category.CategoryTitle
+                },
+                AverageReview = r.Reviews.Count > 0 
+                                    ? Math.Round(r.Reviews.Average(rr => (double)rr.Rating), 2) 
+                                    : 0
+            });
         }
 
         // GET: api/Restaurants/5
@@ -39,7 +48,46 @@ namespace NoshSpot.API.Controllers
                 return NotFound();
             }
 
-            return Ok();
+            return Ok(new
+            {
+                restaurant.Name,
+                restaurant.Description,
+                restaurant.Address,
+                restaurant.ZipCode,
+                restaurant.Telephone,
+                restaurant.Email,
+                restaurant.WebSite,
+                AverageRating = restaurant.Reviews.Count > 0 ? Math.Round(restaurant.Reviews.Average(rr => (double)rr.Rating), 2) : 0,
+                Category = new
+                {
+                    restaurant.CategoryId,
+                    restaurant.Category.CategoryTitle
+                },
+                MenuGroups = restaurant.MenuGroups.Select(mg => new
+                {
+                    mg.MenuGroupId,
+                    mg.MenuGroupTitle,
+                    MenuItems = mg.MenuItems.Select(mi => new
+                    {
+                        mi.MenuItemId,
+                        mi.Name,
+                        mi.Description,
+                        mi.Price
+                    })
+                }),
+                Reviews = restaurant.Reviews.Select(rr => new
+                {
+                    rr.ReviewId,
+                    Customer = new
+                    {
+                        rr.Customer.CustomerId,
+                        rr.Customer.FirstName,
+                        rr.Customer.LastName
+                    },
+                    rr.ReviewDescription,
+                    rr.Rating
+                })
+            });
         }
 
         // PUT: api/Restaurants/5

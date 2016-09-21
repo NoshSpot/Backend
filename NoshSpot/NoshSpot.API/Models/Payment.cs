@@ -10,7 +10,8 @@ namespace NoshSpot.API.Models
         public int PaymentId { get; set; }
         public int CustomerId { get; set; }
         public int OrderId { get; set; }
-        public decimal AmountDue { get; set; }
+        public DateTime PaymentDate { get; set; }
+        public decimal PaymentAmount { get; set; }
 
         public virtual Order Order { get; set; }
     }

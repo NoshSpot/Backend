@@ -18,13 +18,17 @@ namespace NoshSpot.API.Controllers
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
         // GET: api/Categories
-        public IQueryable<Category> GetCategories()
+        public dynamic GetCategories()
         {
-            return db.Categories;
+            return db.Categories.Select(c => new
+            {
+                CategoryId = c.CategoryId,
+                CategoryTitle = c.CategoryTitle
+            });
         }
 
         // GET: api/Categories/5
-        [ResponseType(typeof(Category))]
+        [ResponseType(typeof(object))]
         public IHttpActionResult GetCategory(int id)
         {
             Category category = db.Categories.Find(id);
@@ -33,7 +37,24 @@ namespace NoshSpot.API.Controllers
                 return NotFound();
             }
 
-            return Ok(category);
+            return Ok(new
+            {
+                CategoryId = category.CategoryId,
+                CategoryTitle = category.CategoryTitle,
+                Restaurants = category.Restaurants.Select(r => new
+                {
+                    RestaurantId = r.RestaurantId,
+                    CategoryId = r.CategoryId,
+                    Name = r.Name,
+                    Description = r.Description,
+                    Address = r.Address,
+                    ZipCode = r.ZipCode,
+                    Telephone = r.Telephone,
+                    Email = r.Email,
+                    WebSite = r.WebSite,
+                    AverageReview = r.Reviews.Count > 0 ? Math.Round(r.Reviews.Average(rr => (double)rr.Rating), 2) : 0
+                })
+            });
         }
 
         // PUT: api/Categories/5
@@ -50,7 +71,11 @@ namespace NoshSpot.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(category).State = EntityState.Modified;
+            var dbCategory = db.Categories.Find(id);
+
+            db.Entry(dbCategory).CurrentValues.SetValues(category);
+
+            db.Entry(dbCategory).State = EntityState.Modified;
 
             try
             {
