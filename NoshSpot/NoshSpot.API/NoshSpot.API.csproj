@@ -157,6 +157,10 @@
     <Compile Include="Migrations\201609142054215_MakeCategoryToRestaurantOptional.Designer.cs">
       <DependentUpon>201609142054215_MakeCategoryToRestaurantOptional.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609211919281_ChangePaymentTable.cs" />
+    <Compile Include="Migrations\201609211919281_ChangePaymentTable.Designer.cs">
+      <DependentUpon>201609211919281_ChangePaymentTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -190,6 +194,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609142054215_MakeCategoryToRestaurantOptional.resx">
       <DependentUpon>201609142054215_MakeCategoryToRestaurantOptional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609211919281_ChangePaymentTable.resx">
+      <DependentUpon>201609211919281_ChangePaymentTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

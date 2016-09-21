@@ -11,7 +11,7 @@ namespace NoshSpot.API.Infrastructure
     {
         public NoshSpotDataContext(): base("NoshSpot")
         {
-                
+            //this.Configuration.LazyLoadingEnabled = false;
         }
 
         public IDbSet<Category> Categories { get; set; }

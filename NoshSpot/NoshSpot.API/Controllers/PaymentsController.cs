@@ -17,25 +17,6 @@ namespace NoshSpot.API.Controllers
     {
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
-        // GET: api/Payments
-        public IQueryable<Payment> GetPayments()
-        {
-            return db.Payments;
-        }
-
-        // GET: api/Payments/5
-        [ResponseType(typeof(Payment))]
-        public IHttpActionResult GetPayment(int id)
-        {
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(payment);
-        }
-
         // PUT: api/Payments/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPayment(int id, Payment payment)
@@ -50,7 +31,9 @@ namespace NoshSpot.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(payment).State = EntityState.Modified;
+            var dbPayment = db.Payments.Find(id);
+            db.Entry(dbPayment).CurrentValues.SetValues(payment);
+            db.Entry(dbPayment).State = EntityState.Modified;
 
             try
             {
