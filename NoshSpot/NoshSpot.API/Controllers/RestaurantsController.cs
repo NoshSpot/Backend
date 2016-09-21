@@ -98,7 +98,8 @@ namespace NoshSpot.API.Controllers
                         ro.Customer.FirstName,
                         ro.Customer.LastName
                     },
-                    NumItemsOrdered = ro.OrderItems.Count
+                    NumItemsOrdered = ro.OrderItems.Count,
+                    TotalPrice = ro.OrderItems.Sum(oi => oi.MenuItem.Price)
                 })
             });
         }
