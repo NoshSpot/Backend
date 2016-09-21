@@ -51,6 +51,7 @@ namespace NoshSpot.API.Controllers
 
             return Ok(new
             {
+                restaurant.RestaurantId,
                 restaurant.Name,
                 restaurant.Description,
                 restaurant.Address,
