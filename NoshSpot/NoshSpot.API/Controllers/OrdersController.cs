@@ -40,7 +40,18 @@ namespace NoshSpot.API.Controllers
                     },
                     o.Restaurant.Name,
                     o.Restaurant.Telephone
-                }
+                },
+                OrderItems = o.OrderItems.Select(oi => new
+                {
+                    oi.OrderItemId,
+                    MenuItem = new
+                    {
+                        oi.MenuItemId,
+                        oi.MenuItem.Name,
+                        oi.MenuItem.Description,
+                        oi.MenuItem.Price,
+                    }
+                })
             });
         }
 
