@@ -75,7 +75,18 @@ namespace NoshSpot.API.Controllers
                     {
                         co.RestaurantId,
                         co.Restaurant.Name
-                    }
+                    },
+                    OrderItems = co.OrderItems.Select(oi => new
+                    {
+                        oi.OrderItemId,
+                        MenuItem = new
+                        {
+                            oi.MenuItemId,
+                            oi.MenuItem.Name,
+                            oi.MenuItem.Description,
+                            oi.MenuItem.Price,
+                        }
+                    }),
                 })
             });
         }
