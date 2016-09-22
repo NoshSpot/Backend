@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using NoshSpot.API.Infrastructure;
 using NoshSpot.API.Models;
+using Stripe;
+using NoshSpot.API.Requests;
 
 namespace NoshSpot.API.Controllers
 {
@@ -97,6 +99,47 @@ namespace NoshSpot.API.Controllers
         private bool PaymentExists(int id)
         {
             return db.Payments.Count(e => e.PaymentId == id) > 0;
+        }
+
+        // Stripe route and method
+        [HttpPost, Route("api/payments/charge")]
+        public IHttpActionResult Charge(StripeChargeRequest request)
+        {
+            var myCharge = new StripeChargeCreateOptions();
+
+            // always set these properties
+            myCharge.Amount = request.OrderAmount;
+            myCharge.Currency = "usd";
+
+            // set this if you want to
+            myCharge.Description = request.Description;
+
+            myCharge.SourceTokenOrExistingSourceId = request.Token;
+
+            var chargeService = new StripeChargeService();
+            StripeCharge stripeCharge = chargeService.Create(myCharge);
+
+            if (stripeCharge.Paid)
+            {
+                return Ok(new
+                {
+                    stripeCharge.Amount,
+                    stripeCharge.Created,
+                    stripeCharge.Currency,
+                    stripeCharge.FailureCode,
+                    stripeCharge.FailureMessage,
+                    stripeCharge.Id,
+                    stripeCharge.LiveMode,
+                    stripeCharge.Paid,
+                    stripeCharge.ReceiptEmail,
+                    stripeCharge.StatementDescriptor,
+                    stripeCharge.Status
+                });
+            }
+            else
+            {
+                return BadRequest("Could not complete transaction");
+            }
         }
     }
 }
