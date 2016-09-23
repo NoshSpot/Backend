@@ -167,6 +167,11 @@ namespace NoshSpot.API.Controllers
                 return NotFound();
             }
 
+            foreach(var order in restaurant.Orders)
+            {
+                order.RestaurantId = null;
+            }
+
             db.Restaurants.Remove(restaurant);
             db.SaveChanges();
 
