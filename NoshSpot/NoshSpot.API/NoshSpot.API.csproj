@@ -170,6 +170,10 @@
     <Compile Include="Migrations\201609212324200_SwapCascadeDeleteOrderItemMenuItem.Designer.cs">
       <DependentUpon>201609212324200_SwapCascadeDeleteOrderItemMenuItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609231600292_pending model.cs" />
+    <Compile Include="Migrations\201609231600292_pending model.Designer.cs">
+      <DependentUpon>201609231600292_pending model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -210,6 +214,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609212324200_SwapCascadeDeleteOrderItemMenuItem.resx">
       <DependentUpon>201609212324200_SwapCascadeDeleteOrderItemMenuItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609231600292_pending model.resx">
+      <DependentUpon>201609231600292_pending model.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

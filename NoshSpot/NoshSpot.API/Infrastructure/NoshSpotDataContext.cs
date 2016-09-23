@@ -54,8 +54,8 @@ namespace NoshSpot.API.Infrastructure
             modelBuilder.Entity<MenuItem>()
                         .HasMany(mi => mi.OrderItems)
                         .WithRequired(oi => oi.MenuItem)
-                        .HasForeignKey(oi => oi.MenuItemId)
-                        .WillCascadeOnDelete(false);
+                        .HasForeignKey(oi => oi.MenuItemId);
+                        //.WillCascadeOnDelete(false);
 
             // an order has many order items
             modelBuilder.Entity<Order>()
@@ -78,7 +78,7 @@ namespace NoshSpot.API.Infrastructure
             // a restaurant has many orders
             modelBuilder.Entity<Restaurant>()
                         .HasMany(r => r.Orders)
-                        .WithRequired(o => o.Restaurant)
+                        .WithOptional(o => o.Restaurant)
                         .HasForeignKey(o => o.RestaurantId);
 
             // a restaurant has many menuGroups
