@@ -12,6 +12,8 @@ namespace NoshSpot.API.Models
         {
             OrderItems = new Collection<OrderItem>();
             Payments = new Collection<Payment>();
+            Customer = new Customer();
+            Restaurant = new Restaurant();
         }
 
         public int OrderId { get; set; }
