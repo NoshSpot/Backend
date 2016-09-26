@@ -38,7 +38,7 @@ namespace NoshSpot.API.Migrations
 
             context.SaveChanges();
 
-            if(context.Restaurants.Count() == 0)
+            if (context.Restaurants.Count() == 0)
             {
                 for (int i = 0; i < 50; i++)
                 {
@@ -57,7 +57,7 @@ namespace NoshSpot.API.Migrations
                         }
                     );
                 }
-                
+
                 for (int i = 0; i < 50; i++)
                 {
                     context.Customers.Add(new Customer
@@ -104,7 +104,7 @@ namespace NoshSpot.API.Migrations
                         restaurant.MenuGroups.Add(menuGroup);
                     }
 
-                    foreach(var customer in context.Customers)
+                    foreach (var customer in context.Customers)
                     {
                         int numberOfReviews = random.Next(0, 2);
 
@@ -121,7 +121,7 @@ namespace NoshSpot.API.Migrations
                         }
 
                         // random number of orders
-                        for(int i = 0; i < random.Next(1, 4); i++)
+                        for (int i = 0; i < random.Next(1, 4); i++)
                         {
                             Order order = new Order
                             {
@@ -147,9 +147,9 @@ namespace NoshSpot.API.Migrations
 
                 context.SaveChanges();
 
-                foreach(var order in context.Orders)
+                foreach (var order in context.Orders)
                 {
-                    foreach(var orderItem in order.OrderItems)
+                    foreach (var orderItem in order.OrderItems)
                     {
                         orderItem.OrderId = order.OrderId;
                     }
@@ -157,7 +157,7 @@ namespace NoshSpot.API.Migrations
 
                 context.SaveChanges();
             }
-            
+
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 

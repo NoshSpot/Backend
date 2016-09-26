@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Twilio;
 
 namespace NoshSpot.API.Controllers
 {
@@ -141,6 +142,18 @@ namespace NoshSpot.API.Controllers
 
             db.Customers.Add(customer);
             db.SaveChanges();
+
+            // Notify customer through text
+            // Find your Account Sid and Auth Token at twilio.com/user/account
+            string AccountSid = "AC4ed6a47eb88b2345e74ce0651cdf5405";
+            string AuthToken = "e081dc0a23586390e06555df070c1269";
+            var twilio = new TwilioRestClient(AccountSid, AuthToken);
+            var message = twilio.SendMessage(
+              "+12402046832", 
+              "+13013858213",
+              "Awesome, you signed up!"
+            );
+            Console.WriteLine(message.Sid);
 
             return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
         }
