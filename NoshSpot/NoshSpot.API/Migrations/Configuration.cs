@@ -18,7 +18,7 @@ namespace NoshSpot.API.Migrations
         {
             string[] menuGroupTitles = new string[] { "Starters", "Appetizers", "Main", "Desserts", "Entrees", "Soups", "Salads", "Drinks", "Vegetarian", "Vegan", "Pescatarian", "Carnivore", "Omnivore" };
 
-            List<MenuItem> items = new List<MenuItem>();
+            List<MenuItem> items;
             //context.Categories.Add(new Models.Category { CategoryTitle = "Chinese" });
             var random = new Random();
 
@@ -75,6 +75,7 @@ namespace NoshSpot.API.Migrations
 
                 foreach (var restaurant in context.Restaurants)
                 {
+                    items = new List<MenuItem>();
                     int numberOfMenuGroups = random.Next(2, 4);
 
                     for (int i = 0; i < numberOfMenuGroups; i++)
@@ -135,7 +136,7 @@ namespace NoshSpot.API.Migrations
                             {
                                 order.OrderItems.Add(new OrderItem
                                 {
-                                    MenuItemId = random.Next(1, items.Count())
+                                    MenuItem = items[random.Next(1, items.Count())]
                                 });
                             }
 
