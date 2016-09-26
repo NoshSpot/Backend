@@ -74,7 +74,7 @@ namespace NoshSpot.API.Controllers
                     Restaurant = new
                     {
                         co.RestaurantId,
-                        co.Restaurant.Name
+                        Name = (co.Restaurant == null) ? "N/A" : co.Restaurant.Name 
                     },
                     OrderItems = co.OrderItems.Select(oi => new
                     {
