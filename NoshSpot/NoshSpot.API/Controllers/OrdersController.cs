@@ -1,15 +1,13 @@
-﻿using System;
+﻿using NoshSpot.API.Infrastructure;
+using NoshSpot.API.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using NoshSpot.API.Infrastructure;
-using NoshSpot.API.Models;
 
 namespace NoshSpot.API.Controllers
 {
@@ -18,9 +16,32 @@ namespace NoshSpot.API.Controllers
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
         // GET: api/Orders
-        public IQueryable<Order> GetOrders()
+        public dynamic GetOrders()
         {
-            return db.Orders;
+            return db.Orders.Select(o => new
+            {
+                o.OrderId,
+                o.TimeStamp,
+                Customer = new
+                {
+                    o.Customer.CustomerId,
+                    o.Customer.FirstName,
+                    o.Customer.LastName,
+                    o.Customer.Telephone,
+                    o.Customer.Email
+                },
+                Restaurant = new
+                {
+                    o.Restaurant.RestaurantId,
+                    Category = new
+                    {
+                        o.Restaurant.CategoryId,
+                        o.Restaurant.Category.CategoryTitle
+                    },
+                    o.Restaurant.Name,
+                    o.Restaurant.Telephone
+                }
+            });
         }
 
         // GET: api/Orders/5
@@ -33,7 +54,55 @@ namespace NoshSpot.API.Controllers
                 return NotFound();
             }
 
-            return Ok(order);
+            return Ok(new
+            {
+                order.OrderId,
+                order.TimeStamp,
+                Customer = new
+                {
+                    order.Customer.CustomerId,
+                    order.Customer.FirstName,
+                    order.Customer.LastName,
+                    order.Customer.Address,
+                    order.Customer.ZipCode,
+                    order.Customer.Telephone,
+                    order.Customer.Email
+                },
+                Restaurant = new
+                {
+                    order.Restaurant.RestaurantId,
+                    Category = new
+                    {
+                        order.Restaurant.CategoryId,
+                        order.Restaurant.Category.CategoryTitle
+                    },
+                    order.Restaurant.Name,
+                    order.Restaurant.Description,
+                    order.Restaurant.Address,
+                    order.Restaurant.ZipCode,
+                    order.Restaurant.Telephone,
+                    order.Restaurant.Email,
+                    order.Restaurant.WebSite,
+                    AverageReview = order.Restaurant.Reviews.Count > 0 ? Math.Round(order.Restaurant.Reviews.Average(rr => (double)rr.Rating), 2) : 0
+                },
+                OrderItems = order.OrderItems.Select(oi => new
+                {
+                    oi.OrderItemId,
+                    MenuItem = new
+                    {
+                        oi.MenuItemId,
+                        oi.MenuItem.Name,
+                        oi.MenuItem.Description,
+                        oi.MenuItem.Price,
+                    }
+                }),
+                Payments = order.Payments.Select(p => new
+                {
+                    p.PaymentId,
+                    p.PaymentAmount,
+                    p.PaymentDate
+                })
+            });
         }
 
         // PUT: api/Orders/5
@@ -50,7 +119,9 @@ namespace NoshSpot.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(order).State = EntityState.Modified;
+            var dbOrder = db.Orders.Find(id);
+            db.Entry(dbOrder).CurrentValues.SetValues(order);
+            db.Entry(dbOrder).State = EntityState.Modified;
 
             try
             {

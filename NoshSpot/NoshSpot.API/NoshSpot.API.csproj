@@ -51,6 +51,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Faker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Faker.1.2\lib\Faker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -84,6 +88,14 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Stripe.net, Version=6.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stripe.net.6.6.0\lib\net45\Stripe.net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
@@ -111,9 +123,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -153,6 +162,18 @@
     <Compile Include="Migrations\201609142054215_MakeCategoryToRestaurantOptional.Designer.cs">
       <DependentUpon>201609142054215_MakeCategoryToRestaurantOptional.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609211919281_ChangePaymentTable.cs" />
+    <Compile Include="Migrations\201609211919281_ChangePaymentTable.Designer.cs">
+      <DependentUpon>201609211919281_ChangePaymentTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609212324200_SwapCascadeDeleteOrderItemMenuItem.cs" />
+    <Compile Include="Migrations\201609212324200_SwapCascadeDeleteOrderItemMenuItem.Designer.cs">
+      <DependentUpon>201609212324200_SwapCascadeDeleteOrderItemMenuItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609231600292_pending model.cs" />
+    <Compile Include="Migrations\201609231600292_pending model.Designer.cs">
+      <DependentUpon>201609231600292_pending model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -164,6 +185,7 @@
     <Compile Include="Models\Restaurant.cs" />
     <Compile Include="Models\Review.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\StripeChargeRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -186,6 +208,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609142054215_MakeCategoryToRestaurantOptional.resx">
       <DependentUpon>201609142054215_MakeCategoryToRestaurantOptional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609211919281_ChangePaymentTable.resx">
+      <DependentUpon>201609211919281_ChangePaymentTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609212324200_SwapCascadeDeleteOrderItemMenuItem.resx">
+      <DependentUpon>201609212324200_SwapCascadeDeleteOrderItemMenuItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609231600292_pending model.resx">
+      <DependentUpon>201609231600292_pending model.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

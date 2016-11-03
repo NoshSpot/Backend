@@ -11,7 +11,7 @@ namespace NoshSpot.API.Infrastructure
     {
         public NoshSpotDataContext(): base("NoshSpot")
         {
-                
+            //this.Configuration.LazyLoadingEnabled = false;
         }
 
         public IDbSet<Category> Categories { get; set; }
@@ -55,13 +55,13 @@ namespace NoshSpot.API.Infrastructure
                         .HasMany(mi => mi.OrderItems)
                         .WithRequired(oi => oi.MenuItem)
                         .HasForeignKey(oi => oi.MenuItemId);
+                        //.WillCascadeOnDelete(false);
 
             // an order has many order items
             modelBuilder.Entity<Order>()
                         .HasMany(o => o.OrderItems)
                         .WithRequired(oi => oi.Order)
-                        .HasForeignKey(oi => oi.OrderId)
-                        .WillCascadeOnDelete(false);
+                        .HasForeignKey(oi => oi.OrderId);
             
             // an order has many payments
             modelBuilder.Entity<Order>()
@@ -78,7 +78,7 @@ namespace NoshSpot.API.Infrastructure
             // a restaurant has many orders
             modelBuilder.Entity<Restaurant>()
                         .HasMany(r => r.Orders)
-                        .WithRequired(o => o.Restaurant)
+                        .WithOptional(o => o.Restaurant)
                         .HasForeignKey(o => o.RestaurantId);
 
             // a restaurant has many menuGroups

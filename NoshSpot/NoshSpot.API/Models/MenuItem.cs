@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 
@@ -7,6 +8,11 @@ namespace NoshSpot.API.Models
 {
     public class MenuItem
     {
+        public MenuItem()
+        {
+            OrderItems = new Collection<OrderItem>();
+        }
+
         public int MenuItemId { get; set; }
         public int MenuGroupId { get; set; }
 

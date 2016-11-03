@@ -17,25 +17,6 @@ namespace NoshSpot.API.Controllers
     {
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
-        // GET: api/MenuGroups
-        public IQueryable<MenuGroup> GetMenuGroups()
-        {
-            return db.MenuGroups;
-        }
-
-        // GET: api/MenuGroups/5
-        [ResponseType(typeof(MenuGroup))]
-        public IHttpActionResult GetMenuGroup(int id)
-        {
-            MenuGroup menuGroup = db.MenuGroups.Find(id);
-            if (menuGroup == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(menuGroup);
-        }
-
         // PUT: api/MenuGroups/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutMenuGroup(int id, MenuGroup menuGroup)
@@ -49,6 +30,10 @@ namespace NoshSpot.API.Controllers
             {
                 return BadRequest();
             }
+
+            var dbMenuGroup = db.MenuGroups.Find(id);
+
+            db.Entry(dbMenuGroup).CurrentValues.SetValues(menuGroup);
 
             db.Entry(menuGroup).State = EntityState.Modified;
 

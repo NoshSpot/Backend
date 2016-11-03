@@ -17,25 +17,6 @@ namespace NoshSpot.API.Controllers
     {
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
-        // GET: api/OrderItems
-        public IQueryable<OrderItem> GetOrderItems()
-        {
-            return db.OrderItems;
-        }
-
-        // GET: api/OrderItems/5
-        [ResponseType(typeof(OrderItem))]
-        public IHttpActionResult GetOrderItem(int id)
-        {
-            OrderItem orderItem = db.OrderItems.Find(id);
-            if (orderItem == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(orderItem);
-        }
-
         // PUT: api/OrderItems/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutOrderItem(int id, OrderItem orderItem)
@@ -49,8 +30,11 @@ namespace NoshSpot.API.Controllers
             {
                 return BadRequest();
             }
+            var dbOrderItem = db.OrderItems.Find(id);
 
-            db.Entry(orderItem).State = EntityState.Modified;
+            db.Entry(dbOrderItem).CurrentValues.SetValues(orderItem);
+
+            db.Entry(dbOrderItem).State = EntityState.Modified;
 
             try
             {

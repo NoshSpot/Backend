@@ -1,15 +1,13 @@
-﻿using System;
+﻿using NoshSpot.API.Infrastructure;
+using NoshSpot.API.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using NoshSpot.API.Infrastructure;
-using NoshSpot.API.Models;
 
 namespace NoshSpot.API.Controllers
 {
@@ -18,9 +16,27 @@ namespace NoshSpot.API.Controllers
         private NoshSpotDataContext db = new NoshSpotDataContext();
 
         // GET: api/Restaurants
-        public IQueryable<Restaurant> GetRestaurants()
+        public dynamic GetRestaurants()
         {
-            return db.Restaurants;
+            return db.Restaurants.Select(r => new
+            {
+                r.RestaurantId,
+                r.Name,
+                r.Description,
+                r.Address,
+                r.ZipCode,
+                r.Telephone,
+                r.Email,
+                r.WebSite,
+                Category = new
+                {
+                    r.CategoryId,
+                    r.Category.CategoryTitle
+                },
+                AverageReview = r.Reviews.Count > 0 
+                                    ? Math.Round(r.Reviews.Average(rr => (double)rr.Rating), 2) 
+                                    : 0
+            });
         }
 
         // GET: api/Restaurants/5
@@ -33,7 +49,60 @@ namespace NoshSpot.API.Controllers
                 return NotFound();
             }
 
-            return Ok(restaurant);
+            return Ok(new
+            {
+                restaurant.RestaurantId,
+                restaurant.Name,
+                restaurant.Description,
+                restaurant.Address,
+                restaurant.ZipCode,
+                restaurant.Telephone,
+                restaurant.Email,
+                restaurant.WebSite,
+                AverageRating = restaurant.Reviews.Count > 0 ? Math.Round(restaurant.Reviews.Average(rr => (double)rr.Rating), 2) : 0,
+                Category = new
+                {
+                    restaurant.CategoryId,
+                    restaurant.Category.CategoryTitle
+                },
+                MenuGroups = restaurant.MenuGroups.Select(mg => new
+                {
+                    mg.MenuGroupId,
+                    mg.MenuGroupTitle,
+                    MenuItems = mg.MenuItems.Select(mi => new
+                    {
+                        mi.MenuItemId,
+                        mi.Name,
+                        mi.Description,
+                        mi.Price
+                    })
+                }),
+                Reviews = restaurant.Reviews.Select(rr => new
+                {
+                    rr.ReviewId,
+                    Customer = new
+                    {
+                        rr.Customer.CustomerId,
+                        rr.Customer.FirstName,
+                        rr.Customer.LastName
+                    },
+                    rr.ReviewDescription,
+                    rr.Rating
+                }),
+                Orders = restaurant.Orders.Select(ro => new
+                {
+                    ro.OrderId,
+                    ro.TimeStamp,
+                    Customer = new
+                    {
+                        ro.Customer.CustomerId,
+                        ro.Customer.FirstName,
+                        ro.Customer.LastName
+                    },
+                    NumItemsOrdered = ro.OrderItems.Count,
+                    TotalPrice = ro.OrderItems.Sum(oi => oi.MenuItem.Price)
+                })
+            });
         }
 
         // PUT: api/Restaurants/5
@@ -50,7 +119,9 @@ namespace NoshSpot.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(restaurant).State = EntityState.Modified;
+            var restaurantToBeUpdated = db.Restaurants.Find(id);
+            db.Entry(restaurantToBeUpdated).CurrentValues.SetValues(restaurant);
+            db.Entry(restaurantToBeUpdated).State = EntityState.Modified;
 
             try
             {
@@ -94,6 +165,11 @@ namespace NoshSpot.API.Controllers
             if (restaurant == null)
             {
                 return NotFound();
+            }
+
+            foreach(var order in restaurant.Orders)
+            {
+                order.RestaurantId = null;
             }
 
             db.Restaurants.Remove(restaurant);
